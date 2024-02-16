@@ -12,7 +12,14 @@ In this project, we develop a computation method to integrate both eQTL and Hi-C
 
 <!-- GETTING STARTED -->
 ## Step 1. Identify non-random interactions from Hi-C data
-Download raw HiC data from 4DN and follow the instructions on [CHROMATIX](https://bitbucket.org/aperezrathke/chr-loc-mbi-mam/src/master/) to identify the non-random interactions of selected loci. 
+
+We provide a summary of the workflow used for identifying non-random interactions in GM12878 cells. Analysis was primarily done under a Linux environment. The raw HiC data are downloaded from 4DN and follow the instructions on [CHROMATIX](https://bitbucket.org/aperezrathke/chr-loc-mbi-mam/src/master/) to identify the non-random interactions of selected loci.
+
+-Check [/scr/non-random_interactions_calling](scr/non-random_interactions_calling.ipynb) for details.
+
+
+
+
 
 
 
@@ -63,7 +70,9 @@ For each file, there are 5 columns:
 More details see [folding_data](sample_data/folding_input)
 
 ## Step 3. Reconstruct 3D chromatin structures
-Using the input files generated from Step 2, and following the instructions of [sBIF](https://github.com/qiusun0215/sBIF) to reconstruct 3D chromatin chains
+Using the input files generated from Step 2, and following the [instruction](scr/3Dchromatin_folding.ipynb) reconstruct 3D chromatin chains
+
+Check more details about folding 3D chromatin chains on [sBIF](https://github.com/qiusun0215/sBIF) 
 
 ![Chromatin Chains](image/chromatin_chains.png "Chromatin Chains")
 
@@ -82,6 +91,22 @@ Here is an example reconstructed chromatin chain output file for GM12878 in chr2
 - Each row represents a 5kb genomic region.
 
 More details see [chromatin chain](sample_data/3D_chromatin_chains)
+
+## Step 4. Call physical contacted eGene-eQTL pairs
+
+Integrate reconstructed 3D chromatin chain data with GTEx eGene and eQTL data.
+
+- Download the eQTL data from [GTEx](https://www.gtexportal.org/home/downloads/adult-gtex/qtl)
+- Using the output data from Step 3, run [posi_to_dist.py](scr/posi_to_dist.py) to calculate the pairwise distance among all beads.
+- Run [get_physical_contacted_eGene_eQTL_pairs](scr/get_physical_contacted_eGene_eQTL_pairs.ipynb) to get the list of physical contacted eGene-eQTL pairs.
+
+Here is an example of the output file:
+| eGene_name | variant_id |
+|-----------------|-----------------|
+|ENSG00000204128	| chr2_231054040_C_T_b38 |
+|ENSG00000204128	| chr2_231054157_G_C_b38 |
+| ... | ...  |
+
 
 
 If using this software, please cite:
